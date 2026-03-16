@@ -449,6 +449,7 @@ export default function App() {
             href="https://southernsky.cloud"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="SouthernSky"
             className="fixed top-8 left-4 z-50 flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity duration-300"
           >
             <Cloud className="w-5 h-5 text-blue-500" />
