@@ -1,4 +1,4 @@
-import type { Difficulty, Word } from '../types';
+import type { Difficulty, Word, WordType } from '../types';
 
 export const SENTENCES_STANDARD: string[] = [
   "The rapid advancement of artificial intelligence is transforming how we interact with technology daily.",
@@ -64,19 +64,21 @@ export const generateWords = (
 ): Word[] => {
   let wordPool: Word[] = [];
   while (wordPool.length < count) {
-    let diffTarget: Difficulty = difficulty;
+    let wordType: WordType = "standard";
     if (difficulty === "adaptive") {
-      diffTarget = tpm > 100 ? "syntax" : tpm > 60 ? "code" : "standard";
+      wordType = tpm > 100 ? "syntax" : tpm > 60 ? "code" : "standard";
+    } else if (difficulty === "standard" || difficulty === "code" || difficulty === "syntax") {
+      wordType = difficulty;
     }
 
     let sentence = "";
     if (forceFlow) {
       sentence =
         "finding your rhythm is the key to achieving a true zen state of mind where your fingers simply fly across the keyboard";
-    } else if (diffTarget === "syntax") {
+    } else if (wordType === "syntax") {
       sentence =
         SENTENCES_SYNTAX[Math.floor(Math.random() * SENTENCES_SYNTAX.length)];
-    } else if (diffTarget === "code") {
+    } else if (wordType === "code") {
       sentence =
         SENTENCES_CODE[Math.floor(Math.random() * SENTENCES_CODE.length)];
     } else {
@@ -88,7 +90,7 @@ export const generateWords = (
 
     const sentenceWords: Word[] = sentence.split(" ").map((w) => {
       const isTransformer = Math.random() < 0.05;
-      return { type: isTransformer ? "transformer" : diffTarget, text: w };
+      return { type: isTransformer ? "transformer" : wordType, text: w };
     });
 
     wordPool = [...wordPool, ...sentenceWords];
