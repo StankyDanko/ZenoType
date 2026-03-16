@@ -17,6 +17,7 @@ import Analytics from "./components/Analytics";
 import TypingArea from "./components/TypingArea";
 import GuideHands from "./components/GuideHands";
 
+import { Cloud } from "lucide-react";
 import "./App.css";
 
 export default function App() {
@@ -442,6 +443,19 @@ export default function App() {
         }
         .animate-pop-glow { animation: pop-glow 0.4s ease-out forwards; }
       `}</style>
+
+      {/* SOUTHERNSKY BRAND LINK */}
+          <a
+            href="https://southernsky.cloud"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="fixed top-8 left-4 z-50 flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity duration-300"
+          >
+            <Cloud className="w-5 h-5 text-blue-500" />
+            <span className="hidden sm:inline text-sm font-bold tracking-wide text-white">
+              SouthernSky
+            </span>
+          </a>
 
       {/* HEADER */}
       <Header
