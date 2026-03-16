@@ -29,7 +29,10 @@ export function useKeyStats() {
 
   const recordKeystroke = useCallback((expectedChar: string, isCorrect: boolean) => {
     setKeyStats((prev) => {
-      const stat = prev[expectedChar] || { hits: 0, misses: 0 };
+      const existing = prev[expectedChar];
+      const stat = existing
+        ? { hits: existing.hits, misses: existing.misses }
+        : { hits: 0, misses: 0 };
       if (isCorrect) stat.hits++;
       else stat.misses++;
       return { ...prev, [expectedChar]: stat };

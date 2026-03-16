@@ -41,6 +41,7 @@ export default function App() {
   const inputRef = useRef<HTMLInputElement>(null);
   const activeWordRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
   // --- HOOK 1: KEY STATS ---
   const keyStatsHook = useKeyStats();
@@ -218,7 +219,10 @@ export default function App() {
           }
 
           if (soundEnabled) {
-            const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
+            if (!audioCtxRef.current) {
+              audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+            }
+            const ctx = audioCtxRef.current;
             const osc = ctx.createOscillator();
             const gain = ctx.createGain();
 
@@ -240,6 +244,8 @@ export default function App() {
 
         // Scripture mode: detect chapter complete
         if (difficulty === "scripture" && isCorrect && activeWordIndex === words.length - 1) {
+          setWordHistory((prev) => [...prev, isCorrect]);
+          setActiveWordIndex((prev) => prev + 1);
           scripture.advanceBibleChapter();
           return;
         }
@@ -311,7 +317,7 @@ export default function App() {
       localStorage.setItem("zenotype_hands", showHands.toString());
       scripture.persistScripture();
     } catch {}
-  }, [keyStatsHook, showHands, scripture]);
+  }, [keyStatsHook.persistKeyStats, showHands, scripture.persistScripture]);
 
   // Scroll tracking
   useEffect(() => {
